@@ -1,12 +1,51 @@
+import React, {useReducer, useState} from 'react';
+import './components/App.css';
 
-import React from "react"
-import Hero from "./components/hero"
 
-function App(){
+const formReducer = (state, event) => {
+  return{
+    ...state,
+    [event.name]: event.value
+  }
+}
+
+
+function App() {
+  const [formData, setFormData] = useReducer(formReducer, {});
+  const [submitting, setSubmitting] = useState(false);
+  const handleSubmit = event=> {
+    event.preventDefault();
+    setSubmitting(true)
+
+    setTimeout(() => {
+      setSubmitting(false);
+    }, 3000)
+  } 
+
+  const handleChange = event => {
+    setFormData({
+      name: event.target.name,
+      value: event.target.value,
+    })
+  }
+
   return (
-    <div>
-      <Hero></Hero>
+    <div className="wrapper">
+      <h1>How About Them Apples</h1>
+      {sumbitting &&
+      <div>Submitting Form...</div>}
+      <form onSubmit={handleSubmit}>
+        <fieldset>
+          <label for="name"> 
+            <p>Name</p>
+            <input name="name" onChange={handleChange}></input>
+          </label>
+            
+        </fieldset>
+        <button type="submit">Submit</button>
+      </form>
     </div>
   )
 }
-export default App
+
+export default App;
